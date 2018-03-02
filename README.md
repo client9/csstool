@@ -5,7 +5,7 @@ CSS filters and formatters in golang
 
 Use awesome CSS frameworks without the weight by cutting out unused rules.
 
-csscut is somewhat like [purgecss](https://www.purgecss.com) (on [GitHub](https://github.com/FullHuman/purgecss)).  It scans your HTML for elements, classes and identifiers and then cuts out any CSS rule that doesn't apply.   The results for a small site using bootstrap can be dramatic:
+`csscut` is somewhat like [purgecss](https://www.purgecss.com) ([GitHub](https://github.com/FullHuman/purgecss)). It scans your HTML for elements, classes and identifiers and then cuts out any CSS rule that doesn't apply. The results for a small site using a framework like [bootstrap](https://getbootstrap.com) can be dramatic:
 
 |                | Bootstrap | csscut |
 |----------------|-----------|--------|
@@ -13,13 +13,15 @@ csscut is somewhat like [purgecss](https://www.purgecss.com) (on [GitHub](https:
 | compressed     |    25k    |   3k   |
 
 
-For use in [hugo](https://gohugo.io) using [bootstrap](https://getbootstrap.com):
+### Example
+
+For use with [hugo](https://gohugo.io) using [bootstrap](https://getbootstrap.com):
 
 ```bash
 # install the binary
 go get github.com/client9/csstool/cmd/csscut
 
-# build your site
+# build your site, by default the output is in `public`
 hugo
 
 # create new minimized CSS file from bootstrap
