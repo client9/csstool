@@ -9,8 +9,8 @@ Use awesome CSS frameworks without the weight by cutting out unused rules.
 
 |                | Bootstrap | csscut   | savings |
 |----------------|-----------|----------|---------|
-| uncompressed   |   145k    |   8.1k   |   94%   |
-| compressed     |    25k    |   2.6k   |   90%   |
+| uncompressed   |   141k    |   8.1k   |   94%   |
+| compressed     |    20k    |   2.6k   |   87%   |
 
 
 ### Example
