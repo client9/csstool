@@ -13,8 +13,9 @@ import (
 )
 
 var (
-	flagHTML  = flag.String("html", "", "pattern for finding HTML files")
-	flagDebug = flag.Bool("debug", false, "enable debug logging")
+	flagHTML   = flag.String("html", "", "pattern for finding HTML files")
+	flagDebug  = flag.Bool("debug", false, "enable debug logging")
+	flagFormat = flag.String("format", "list", "one of list,csv,counts")
 )
 
 func main() {
@@ -50,5 +51,16 @@ func main() {
 			r.Close()
 		}
 	}
-	fmt.Printf("%s\n", strings.Join(c.List(), ","))
+
+	switch *flagFormat {
+	case "list":
+		for _, val := range c.List() {
+			fmt.Printf("%s\n", val)
+		}
+	case "csv":
+		fmt.Printf("%s\n", strings.Join(c.List(), ","))
+	case "count", "counts":
+	default:
+		log.Fatalf("Unknown format %q", *flagFormat)
+	}
 }
