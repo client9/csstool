@@ -13,17 +13,18 @@ func NewTagMatch(tags []string, keep bool) *TagMatch {
 		tagmap[tag] = true
 	}
 	delete(tagmap, "")
-	if keep && len(tagmap) > 0 {
-		tagmap["*"] = true
-		tagmap[":"] = true
-		tagmap["["] = true
-	}
 	return &TagMatch{tags: tagmap, keep: keep}
 }
 
 // Keep returns true if a tag is to be preserved
 func (tm *TagMatch) Keep(val string) bool {
-	if len(tm.tags) == 0 {
+	if len(tm.tags) == 0 || len(val) == 0 {
+		return true
+	}
+
+	// now we know len(val) > 0
+	//  special ones
+	if val[0] == '*' || val[0] == ':' || val[0] == '[' {
 		return true
 	}
 	inmap := tm.tags[val]

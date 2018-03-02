@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"log"
 
 	"github.com/tdewolff/parse/css"
 )
@@ -39,6 +40,7 @@ type CSSFormat struct {
 	Indent          int
 	IndentTab       bool
 	AlwaysSemicolon bool
+	Debug           bool
 	Matcher         *TagMatch
 }
 
@@ -84,7 +86,10 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 		// h1,h2 are here, but h3 is a beginRuleSetGrammar
 		case css.QualifiedRuleGrammar:
 			tokens := p.Values()
-			if c.Matcher.Remove(tokens[0].Data) {
+			if c.Matcher.Remove(primarySelector(tokens)) {
+				if c.Debug {
+					log.Printf("cutting qualified rule %q due to %q", completeSelector(tokens), primarySelector(tokens))
+				}
 				continue
 			}
 			if qualified == 0 {
@@ -100,7 +105,10 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			ruleCount = 0
 			tokens := p.Values()
 			if qualified == 0 {
-				if c.Matcher.Remove(tokens[0].Data) {
+				if c.Matcher.Remove(primarySelector(tokens)) {
+					if c.Debug {
+						log.Printf("cutting ruleset1 %q due to %q", completeSelector(tokens), primarySelector(tokens))
+					}
 					indent++
 					skipRuleset = true
 					continue
@@ -116,7 +124,10 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 
 			qualified = 0
 			indent++
-			if c.Matcher.Remove(tokens[0].Data) {
+			if c.Matcher.Remove(primarySelector(tokens)) {
+				if c.Debug {
+					log.Printf("cutting qualified rule %q due to %q", completeSelector(tokens), primarySelector(tokens))
+				}
 				c.writeLeftBrace(w)
 				continue
 			}
@@ -227,6 +238,52 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 	}
 	wbuf.Flush()
 	return err
+}
+
+// given "a:not(.btn)" returns "a"
+func primarySelector(tokens []css.Token) []byte {
+	buf := []byte{}
+	for _, t := range tokens {
+		if len(t.Data) != 1 {
+			buf = append(buf, t.Data...)
+			continue
+		}
+		if t.Data[0] == '[' {
+			break
+		}
+		if t.Data[0] == '+' {
+			break
+		}
+		if t.Data[0] == ' ' {
+			break
+		}
+		if t.Data[0] == '.' {
+			if len(buf) > 0 {
+				break
+			}
+		}
+		if t.Data[0] == ':' {
+			if len(buf) > 1 {
+				// got "foo:"
+				break
+			}
+			if len(buf) == 1 && buf[0] != ':' {
+				// got "a:
+				break
+			}
+		}
+		buf = append(buf, t.Data...)
+	}
+	return buf
+}
+
+// gives the complete identier from tokens
+func completeSelector(tokens []css.Token) []byte {
+	buf := []byte{}
+	for _, t := range tokens {
+		buf = append(buf, t.Data...)
+	}
+	return buf
 }
 
 var (
