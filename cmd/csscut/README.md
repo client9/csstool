@@ -1,4 +1,4 @@
-# cssdrop drops unused rules based on HTML usage
+# csscut drops unused rules based on HTML usage
 
 See Also:
 
