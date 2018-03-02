@@ -13,6 +13,8 @@ Use awesome CSS frameworks without the weight by cutting out unused rules.
 | compressed     |    20k    |   2.6k   |   87%   |
 
 
+See also [Hugo #4446](https://github.com/gohugoio/hugo/issues/4446#issuecomment-370070252)
+
 ### Example
 
 For use with [hugo](https://gohugo.io) using [bootstrap](https://getbootstrap.com):
