@@ -1,7 +1,7 @@
 
 build: hooks  ## build, install, lint
 	go build ./...
-	go install ./cmd/cssformat ./cmd/cssdrop ./cmd/csscount
+	go install ./cmd/cssformat ./cmd/csscut ./cmd/csscount
 	gometalinter \
                  --vendor \
                  --deadline=60s \
