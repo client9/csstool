@@ -25,7 +25,8 @@ go get github.com/client9/csstool/cmd/csscut
 hugo
 
 # create new minimized CSS file from bootstrap
-csscut -html 'public/**/*.html' < static/bootstrap.min.css > static/bootstrap-csscut.min.css
+curl -s https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css | \
+csscut -html 'public/**/*.html' > static/bootstrap-csscut.min.css
 ```
 
 Of course, you'll need to use the new `bootstrap-csscut.min.css` file in your template source.
