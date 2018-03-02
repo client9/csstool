@@ -34,10 +34,17 @@ Be sure to put the HTML file pattern `'public/**/*.html'` in single quotes.
 
 Makes minified CSS readable.
 
+```
+go get github.com/client9/csstool/cmd/cssformat
+
+cssformat < bootstrap.min.css
+```
 
 ## csscount
 
 See commonly or rarely used CSS classes and identifiers.
+
+Work in progress
 
 ## Credits
 
