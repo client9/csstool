@@ -1,6 +1,8 @@
 # csstool
 CSS filters and formatters in golang
 
+[![Build Status](https://travis-ci.org/client9/csstool.svg?branch=master)](https://travis-ci.org/client9/csstool)
+
 ## csscut 
 
 Use awesome CSS frameworks without the weight by cutting out unused rules.
