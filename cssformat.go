@@ -232,8 +232,16 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			}
 		case css.TokenGrammar:
 			w.Write(data)
+		case css.AtRuleGrammar:
+			c.addIndent(w, indent)
+			w.Write(data)
+			tokens := p.Values()
+			for _, tok := range tokens {
+				w.Write(tok.Data)
+			}
+			c.writeSemicolon(w)
 		default:
-			panic("Unknown grammar")
+			panic("Unknown grammar: " + gt.String() + " " + string(data))
 		}
 	}
 	wbuf.Flush()
