@@ -1,0 +1,11 @@
+sudo: false
+dist: trusty
+language: go
+go:
+  - "1.10"
+git:
+  depth: 1
+script:
+  - make -e ci
+after_success:
+  - test -n "$TRAVIS_TAG" && ./scripts/goreleaser.sh
