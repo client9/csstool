@@ -6,13 +6,19 @@ build: hooks  ## build, install, lint
                  --vendor \
                  --deadline=60s \
                  --disable-all \
-                 --enable=vet \
+		 --enable=vet \
                  --enable=golint \
                  --enable=gofmt \
                  --enable=goimports \
-		 --enable=gosimple \
+                 --enable=gosimple \
+                 --enable=staticcheck \
+                 --enable=ineffassign \
+                 --exclude=/usr/local/go/src/net/lookup_unix.go \
                  ./...
 	go test .
+
+# nothing special to do for travis-ci.org
+ci: build
 
 test:  ## run all tests
 	go test .
