@@ -6,6 +6,7 @@ go:
 git:
   depth: 1
 script:
-  - make -e ci
+  - ./scripts/setup.sh
+  - ./scripts/build.sh
 after_success:
   - test -n "$TRAVIS_TAG" && ./scripts/goreleaser.sh

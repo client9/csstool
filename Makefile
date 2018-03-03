@@ -2,11 +2,6 @@
 build: hooks  ## build, install, lint
 	./scripts/build.sh
 
-# for travis only
-ci:
-	./scripts/setup.sh
-	./scripts/build.sh
-
 test:  ## run all tests
 	go test .
 
