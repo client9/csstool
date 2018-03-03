@@ -1,24 +1,11 @@
 
 build: hooks  ## build, install, lint
-	go build ./...
-	go install ./cmd/cssformat ./cmd/csscut ./cmd/csscount
-	gometalinter \
-                 --vendor \
-                 --deadline=60s \
-                 --disable-all \
-		 --enable=vet \
-                 --enable=golint \
-                 --enable=gofmt \
-                 --enable=goimports \
-                 --enable=gosimple \
-                 --enable=staticcheck \
-                 --enable=ineffassign \
-                 --exclude=/usr/local/go/src/net/lookup_unix.go \
-                 ./...
-	go test .
+	./scripts/build.sh
 
-# nothing special to do for travis-ci.org
-ci: build
+# for travis only
+ci:
+	./scripts/setup.sh
+	./scripts/build.sh
 
 test:  ## run all tests
 	go test .
@@ -28,7 +15,7 @@ clean:  ## clean up time
 	go clean ./...
 	git gc --aggressive
 
-.PHONY: help ci console bench
+.PHONY: help ci bench
 
 # https://www.client9.com/automatically-install-git-hooks/
 .git/hooks/pre-commit: scripts/pre-commit.sh
