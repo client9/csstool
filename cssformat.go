@@ -56,7 +56,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 	rulesetCount := 0
 
 	p := css.NewParser(r, false)
-	for err == nil {
+	for {
 		gt, _, data := p.Next()
 		switch gt {
 		case css.ErrorGrammar:
@@ -208,8 +208,6 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			panic("Unknown grammar: " + gt.String() + " " + string(data))
 		}
 	}
-	wbuf.Flush()
-	return err
 }
 
 // given "a:not(.btn)" returns "a"
