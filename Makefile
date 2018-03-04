@@ -1,9 +1,8 @@
 
-build: hooks  ## build, install, lint
+build: hooks  ## build, install, lint, test
 	./scripts/build.sh
 
-test:  ## run all tests
-	go test .
+test: build
 
 cov:
 	go test -coverprofile=coverage.out 
