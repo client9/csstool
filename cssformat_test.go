@@ -124,6 +124,42 @@ var testcases = []struct {
 		tags: []string{"h1"},
 		want: "@import url(font-awesome.min.css);",
 	},
+	{
+		// standard descendant combinator " " (space)
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors
+		css:  "li li{list-style-type:circle}",
+		tags: []string{"li"},
+		want: "li li{list-style-type:circle}",
+	},
+	{
+		// test alternative form of descendant combinator ">>"
+		// this might be more a test of parser than of csscut
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors
+		css:  "li >> li {list-style-type: circle}",
+		tags: []string{"li"},
+		want: "li>>li{list-style-type:circle}",
+	},
+	{
+		// general sibling combinator
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_selectors
+		css:  "img~p{color:red}",
+		tags: []string{"img"},
+		want: "img~p{color:red}",
+	},
+	{
+		// adjacent sibling combinator
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_selectors
+		css:  "img+p{font-style:bold}",
+		tags: []string{"img"},
+		want: "img+p{font-style:bold}",
+	},
+	{
+		// test ID selector
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors
+		css:  "#demo{border:red 2px solid}",
+		tags: []string{"#demo"},
+		want: "#demo{border:red 2px solid}",
+	},
 }
 
 func TestCut(t *testing.T) {

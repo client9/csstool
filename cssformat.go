@@ -190,12 +190,11 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			c.addSpace(w)
 			tokens := p.Values()
 			for _, tok := range tokens {
+				// add space before !important
 				if len(tok.Data) == 1 && tok.Data[0] == '!' {
 					c.addSpace(w)
-					w.Write([]byte{'!'})
-				} else {
-					w.Write(tok.Data)
 				}
+				w.Write(tok.Data)
 			}
 		case css.TokenGrammar:
 			w.Write(data)
@@ -218,23 +217,19 @@ func primarySelector(tokens []css.Token) []byte {
 			buf = append(buf, t.Data...)
 			continue
 		}
-		if t.Data[0] == '[' {
-			break
-		}
-		if t.Data[0] == '+' {
-			break
-		}
-		if t.Data[0] == ' ' {
-			break
-		}
-		if t.Data[0] == '>' {
-			break
-		}
+
+		// class selectors
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors
 		if t.Data[0] == '.' {
+			// this should only be triggered for compound
+			// selectors like atag.aclass
 			if len(buf) > 0 {
 				break
 			}
 		}
+
+		// pseudo-class and pseudo-elements
+		//
 		if t.Data[0] == ':' {
 			if len(buf) > 1 {
 				// got "foo:"
@@ -245,6 +240,31 @@ func primarySelector(tokens []css.Token) []byte {
 				break
 			}
 		}
+		// attribute selector
+		if t.Data[0] == '[' {
+			break
+		}
+		// descendant combinator
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors
+		//  also note it could be ">>"
+		if t.Data[0] == ' ' {
+			break
+		}
+		// child combinator
+		// https: //developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors
+		if t.Data[0] == '>' {
+			break
+		}
+		// adjacent sibling combinator
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_selectors
+		if t.Data[0] == '+' {
+			break
+		}
+		// general sibling combinator
+		if t.Data[0] == '~' {
+			break
+		}
+
 		buf = append(buf, t.Data...)
 	}
 	return buf
