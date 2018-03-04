@@ -7,7 +7,7 @@ CSS filters and formatters in golang
 
 Use awesome CSS frameworks without the weight by cutting out unused rules.
 
-`csscut` is somewhat like [purgecss](https://www.purgecss.com) ([GitHub](https://github.com/FullHuman/purgecss)). It scans your HTML for elements, classes and identifiers and then cuts out any CSS rule that doesn't apply. The results for a small site using a framework like [bootstrap](https://getbootstrap.com) can be dramatic:
+`csscut` is similar to [purgecss](https://www.purgecss.com) ([GitHub](https://github.com/FullHuman/purgecss)). It scans your HTML for elements, classes and identifiers and then cuts out any CSS rule that doesn't apply. The results for a small site using a framework like [bootstrap](https://getbootstrap.com) can be dramatic:
 
 |                | Bootstrap | csscut   | savings |
 |----------------|-----------|----------|---------|
@@ -37,9 +37,19 @@ Of course, you'll need to use the new `bootstrap-csscut.min.css` file in your te
 
 Be sure to put the HTML file pattern `'public/**/*.html'` in single quotes.
 
-### The Correct Algorithm
+### Usage
 
-The "correct way" is to 
+TK - likely to change, feedback welcome
+
+### API
+
+TK - likely to change, feedback welcome
+
+### How It Works
+
+#### The Correct Algorithm
+
+The "correct way" to strip out CSS rules might be:
 
 1. Read in all the CSS files, and extract all the selectors
 2. For each HTML file, execute each selector and see if it returns anything
@@ -49,18 +59,20 @@ There are a few problems:
 
 1. Slow, as you are executing _n_ CSS rules against _m_ HTML files.
 2. Need a perfect CSS Level 3 (or 4!) selector library, else you might strip out rules that are actually used.  
-3. Need to know which pseudo-classes matter and which one's don't.  For instance `:hover` can be ignored, but `:last_child` needs to be evaluated.
+3. Need to know which pseudo-classes matter and which ones do not.  For instance `:hover` can be ignored, but `:last_child` needs to be evaluated.
 
-### CSSCut Algorithm
+#### The CSSCut Algorithm
 
-1. Read each HTML file and keep track of elements, classes and ids found.  This is can be in a fast and simple way.
-2. Scan the CSS file and using the _primary selector_ and previous step, keep or remove the selector and it's rule.   Combinators and pseudo-elements are ignored in making the decision. This can be in streaming mode.
+Since the Correct Way seems problematic, csscut does the following:
 
-Ok what does that mean?  If the `li` element is found in the html then the CSS selector is also allowed `li:first-of-type` and `li li` even if you don't have a nested list.  If `img` is found, then the CSS rule `img ~ p` is also allowed, even if you don't have paragraph as a sibling of an image.
+1. Read each HTML file and keep track of elements, classes and ids found.
+2. Scan the CSS file and using the _primary selector_ and previous step, keep or remove the selector and it's rule.   Combinators and pseudo-elements are ignored in making the decision.
 
-As a special case, "universal selectors" are passed through: `*, ::before, ::after`. Pure attribute selectors are also passed through: `[hidden]`.
+If the `li` element is found in the html then the CSS selector is also allowed `li:first-of-type` and `li li` even if you don't have a nested list.  If `img` is found, then the CSS rule `img ~ p` is also allowed, even if you don't have paragraph as a sibling of an image.
 
-In practice this works well for "flat" CSS frameworks such as bootstrap.  For highly specified CSS it might not work as well. 
+As a special case, "universal selectors" are passed through: `*, ::before, ::after, ::root`. Pure attribute selectors are also passed through: `[hidden]`.
+
+In practice this works well for "flat" CSS frameworks such as [bootstrap](https://getbootstrap.com).  For highly specified CSS it might not work as well. 
 
 # cssformat 
 
