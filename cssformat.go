@@ -145,13 +145,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			c.addIndent(w, indent)
 			w.Write(data)
 			c.addSpace(w)
-			tokens := p.Values()
-			for i, tok := range tokens {
-				if i > 0 {
-					c.addSpace(w)
-				}
-				w.Write(tok.Data)
-			}
+			c.writeTokens(w, p.Values())
 			c.writeLeftBrace(w)
 
 			// set up new buffer for content
