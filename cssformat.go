@@ -37,7 +37,7 @@ func NewCSSFormat(indent int, useTabs bool, tags []string) *CSSFormat {
 	return &CSSFormat{
 		Indent:    indent,
 		IndentTab: useTabs,
-		Matcher:   NewTagMatch(tags, true),
+		Matcher:   NewTagMatch(tags),
 	}
 }
 

@@ -6,7 +6,7 @@ type TagMatch struct {
 }
 
 // NewTagMatch creates an initialized TagMatch object
-func NewTagMatch(tags []string, keep bool) *TagMatch {
+func NewTagMatch(tags []string) *TagMatch {
 	tagmap := make(map[string]bool, len(tags))
 	for _, tag := range tags {
 		tagmap[tag] = true
