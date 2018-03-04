@@ -5,6 +5,10 @@ build: hooks  ## build, install, lint
 test:  ## run all tests
 	go test .
 
+cov:
+	go test -coverprofile=coverage.out 
+	go tool cover -html=coverage.out
+
 clean:  ## clean up time
 	rm -rf dist/ bin/
 	go clean ./...

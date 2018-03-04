@@ -9,21 +9,6 @@ import (
 	"github.com/tdewolff/parse/css"
 )
 
-func getTags(tokens []css.Token) []string {
-	out := []string{}
-	first := true
-	for _, tok := range tokens {
-		if first && tok.TokenType == css.IdentToken {
-			out = append(out, string(tok.Data))
-			first = false
-		}
-		if tok.TokenType == css.WhitespaceToken {
-			first = true
-		}
-	}
-	return out
-}
-
 type stack []io.Writer
 
 func (s stack) Push(v io.Writer) stack {
@@ -114,9 +99,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 					continue
 				}
 				c.addIndent(w, indent)
-				for _, t := range tokens {
-					w.Write(t.Data)
-				}
+				c.writeTokens(w, tokens)
 				c.writeLeftBrace(w)
 				indent++
 				continue
@@ -132,9 +115,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 				continue
 			}
 			c.writeComma(w)
-			for _, t := range tokens {
-				w.Write(t.Data)
-			}
+			c.writeTokens(w, tokens)
 			c.writeLeftBrace(w)
 		case css.EndRulesetGrammar:
 			indent--
@@ -149,10 +130,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			if c.AlwaysSemicolon {
 				w.Write([]byte{';'})
 			}
-			c.addNewline(w)
-			c.addIndent(w, indent)
-			w.Write([]byte{'}'})
-			c.addNewline(w)
+			c.writeRightBrace(w, indent)
 		case css.BeginAtRuleGrammar:
 			ruleCount = 0
 			rulesetCount = 0
@@ -193,9 +171,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			}
 			w.Write(header)
 			w.Write(contents)
-			c.addIndent(w, indent)
-			w.Write([]byte{'}'})
-			c.addNewline(w)
+			c.writeRightBrace(w, indent)
 		case css.CommentGrammar:
 			w.Write(data)
 			c.addNewline(w)
@@ -204,10 +180,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			w.Write(data)
 			// do not add space
 			w.Write([]byte{':'})
-			tokens := p.Values()
-			for _, tok := range tokens {
-				w.Write(tok.Data)
-			}
+			c.writeTokens(w, p.Values())
 			c.writeSemicolon(w)
 		case css.DeclarationGrammar:
 			if skipRuleset {
@@ -235,10 +208,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 		case css.AtRuleGrammar:
 			c.addIndent(w, indent)
 			w.Write(data)
-			tokens := p.Values()
-			for _, tok := range tokens {
-				w.Write(tok.Data)
-			}
+			c.writeTokens(w, p.Values())
 			c.writeSemicolon(w)
 		default:
 			panic("Unknown grammar: " + gt.String() + " " + string(data))
@@ -263,6 +233,9 @@ func primarySelector(tokens []css.Token) []byte {
 			break
 		}
 		if t.Data[0] == ' ' {
+			break
+		}
+		if t.Data[0] == '>' {
 			break
 		}
 		if t.Data[0] == '.' {
@@ -339,6 +312,16 @@ func (c *CSSFormat) writeLeftBrace(w io.Writer) {
 	}
 	w.Write([]byte{' ', '{', '\n'})
 }
+func (c *CSSFormat) writeRightBrace(w io.Writer, depth int) {
+	if c.Indent == 0 {
+		w.Write([]byte{'}'})
+		return
+	}
+	c.addNewline(w)
+	c.addIndent(w, depth)
+	w.Write([]byte{'}'})
+	c.addNewline(w)
+}
 
 func (c *CSSFormat) writeSemicolon(w io.Writer) {
 	if c.Indent == 0 {
@@ -346,4 +329,10 @@ func (c *CSSFormat) writeSemicolon(w io.Writer) {
 		return
 	}
 	w.Write([]byte{';', '\n'})
+}
+
+func (c *CSSFormat) writeTokens(w io.Writer, tokens []css.Token) {
+	for _, tok := range tokens {
+		w.Write(tok.Data)
+	}
 }
