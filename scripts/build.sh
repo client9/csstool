@@ -2,7 +2,7 @@
 set -ex
 
 go build ./...
-go install ./cmd/cssformat ./cmd/csscut ./cmd/csscount
+go install ./css
 gometalinter \
     --vendor \
     --deadline=60s \

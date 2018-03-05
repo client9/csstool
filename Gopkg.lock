@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/mattn/go-zglob"
   packages = [
@@ -9,6 +15,18 @@
     "fastwalk"
   ]
   revision = "4959821b481786922ac53e7ef25c61ae19fb7c36"
+
+[[projects]]
+  name = "github.com/spf13/cobra"
+  packages = ["."]
+  revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
+  version = "v0.0.1"
+
+[[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/tdewolff/parse"
@@ -32,6 +50,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2ed451889547d6332034e35965589930877c11283aacbce8ee50a43986b8d963"
+  inputs-digest = "781dab5ff6e82f2d2f4078c92320b3583a077a1ddf091ff888f348eab0aea50d"
   solver-name = "gps-cdcl"
   solver-version = 1
