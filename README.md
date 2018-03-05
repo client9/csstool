@@ -79,12 +79,18 @@ In practice this works well for "flat" CSS frameworks such as [bootstrap](https:
 Makes minified CSS readable.
 
 ```
-go get github.com/client9/csstool/cmd/cssformat
-
 css format < bootstrap.min.css
 ```
 
-## css count
+# css minify
+
+```
+css minify < bootstrap.min.css
+```
+
+minify is a short cut of 'css format' with all options selected to produce the smallest output.
+
+# css count
 
 See commonly or rarely used CSS classes and identifiers.
 
