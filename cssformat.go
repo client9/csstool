@@ -47,8 +47,12 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 	var w io.Writer
 	writers := make(stack, 0)
 	wbuf := bufio.NewWriter(wraw)
+
+	// w is the main writer that is used.
+	//  adjusted to whatever the correct destination is
 	w = wbuf
-	//writers = writers.Push(wbuf)
+
+	// various states
 	qualified := 0
 	ruleCount := 0
 	indent := 0

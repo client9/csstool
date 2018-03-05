@@ -22,6 +22,7 @@ var formatCmd = &cobra.Command{
 			flagIndent = 1
 		}
 		cssformat := csstool.NewCSSFormat(flagIndent, flagTab, nil)
+		cssformat.AlwaysSemicolon = flagSemicolon
 		err := cssformat.Format(os.Stdin, os.Stdout)
 		if err != nil {
 			log.Printf("FAIL: %s", err)
@@ -30,12 +31,14 @@ var formatCmd = &cobra.Command{
 }
 
 var (
-	flagTab    bool
-	flagIndent int
+	flagTab       bool
+	flagIndent    int
+	flagSemicolon bool
 )
 
 func init() {
 	rootCmd.AddCommand(formatCmd)
 	formatCmd.Flags().BoolVarP(&flagTab, "tab", "t", false, "use tabs for indentation")
 	formatCmd.Flags().IntVarP(&flagIndent, "indent", "i", 2, "spaces for indentation")
+	formatCmd.Flags().BoolVarP(&flagSemicolon, "semicolon", "", true, "always end rule with semicolon, even if not needed")
 }
