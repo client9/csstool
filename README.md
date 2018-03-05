@@ -30,7 +30,7 @@ hugo
 
 # create new minimized CSS file from bootstrap
 curl -s https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css | \
-    css cut -html 'public/**/*.html' > static/bootstrap-csscut.min.css
+    css cut --html 'public/**/*.html' > static/bootstrap-csscut.min.css
 ```
 
 Of course, you'll need to use the new `bootstrap-csscut.min.css` file in your template source.
