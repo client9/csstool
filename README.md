@@ -3,7 +3,7 @@ CSS filters and formatters in golang
 
 [![Build Status](https://travis-ci.org/client9/csstool.svg?branch=master)](https://travis-ci.org/client9/csstool)
 
-## csscut 
+## css cut 
 
 Use awesome CSS frameworks without the weight by cutting out unused rules.
 
@@ -23,14 +23,14 @@ For use with [hugo](https://gohugo.io) using [bootstrap](https://getbootstrap.co
 
 ```bash
 # install the binary
-go get github.com/client9/csstool/cmd/csscut
+go get github.com/client9/csstool/css
 
 # build your site, by default the output is in `public`
 hugo
 
 # create new minimized CSS file from bootstrap
 curl -s https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css | \
-    csscut -html 'public/**/*.html' > static/bootstrap-csscut.min.css
+    css cut -html 'public/**/*.html' > static/bootstrap-csscut.min.css
 ```
 
 Of course, you'll need to use the new `bootstrap-csscut.min.css` file in your template source.
@@ -74,17 +74,17 @@ As a special case, "universal selectors" are passed through: `*, ::before, ::aft
 
 In practice this works well for "flat" CSS frameworks such as [bootstrap](https://getbootstrap.com).  For highly specified CSS it might not work as well. 
 
-# cssformat 
+# css format 
 
 Makes minified CSS readable.
 
 ```
 go get github.com/client9/csstool/cmd/cssformat
 
-cssformat < bootstrap.min.css
+css format < bootstrap.min.css
 ```
 
-## csscount
+## css count
 
 See commonly or rarely used CSS classes and identifiers.
 

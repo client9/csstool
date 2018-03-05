@@ -19,7 +19,7 @@ var rootCmd = &cobra.Command{
 
 The main command is 'css cut' which will remove unused CSS rules based on existing HTML files. For frameworks like bootstrap, the savings can be over 90%.
 
-'css format' will unminify CSS files and ident them nicely.
+'css format' will unminify CSS files and indent them nicely.
 
 'css minify' is a CSS whitespace minifier.  It does not do more advanced transformations altering the rules themselves. 
 

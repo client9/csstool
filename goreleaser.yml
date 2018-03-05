@@ -1,8 +1,8 @@
 # goreleaser.yml
 # https://github.com/goreleaser/goreleaser 
 build:
-  main: cmd/csscut/main.go
-  binary: csscut
+  main: css/main.go
+  binary: css
   ldflags: -s -w -X main.version={{.Version}}
   goos:
     - darwin
