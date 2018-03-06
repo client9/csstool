@@ -26,7 +26,7 @@ type CSSFormat struct {
 	IndentTab       bool
 	AlwaysSemicolon bool
 	Debug           bool
-	Matcher         *TagMatch
+	Matcher         *tagMatch
 }
 
 // NewCSSFormat creates an initialized CSSFormat object
@@ -37,7 +37,7 @@ func NewCSSFormat(indent int, useTabs bool, tags []string) *CSSFormat {
 	return &CSSFormat{
 		Indent:    indent,
 		IndentTab: useTabs,
-		Matcher:   NewTagMatch(tags),
+		Matcher:   newTagMatch(tags),
 	}
 }
 
