@@ -25,6 +25,12 @@ The main command is 'css cut' which will remove unused CSS rules based on existi
 
 'css count' is mostly for debugging and identifying rarely used css rules.
 `,
+	Run: func(cmd *cobra.Command, args []string) {
+		if flagVersion {
+			fmt.Println(version)
+			os.Exit(0)
+		}
+	},
 }
 
 // Execute is the entry point for the CLI command
@@ -36,14 +42,17 @@ func Execute() {
 }
 
 var (
-	flagDebug bool
+	flagDebug   bool
+	flagVersion bool
+
+	// this over-written at compile time
+	version = "dev"
 )
 
 func init() {
 	//cobra.OnInitialize(initConfig)
-
+	rootCmd.Flags().BoolVarP(&flagVersion, "version", "v", false, "show version and exit")
 	rootCmd.PersistentFlags().BoolVarP(&flagDebug, "debug", "d", false, "debug logging")
-
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
