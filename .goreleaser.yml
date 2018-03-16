@@ -20,5 +20,8 @@ archive:
     386: 32bit
     darwin: mac
 
+checksum:
+  name_template: "{{ .Binary }}_{{ .Version }}_checksums.txt"
+
 snapshot:
   name_template: SNAPSHOT-{{.Commit}}
