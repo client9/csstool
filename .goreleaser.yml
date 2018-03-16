@@ -3,7 +3,7 @@
 build:
   main: css/main.go
   binary: css
-  ldflags: -s -w -X main.version={{.Version}}
+  ldflags: -s -w -X github.com/client9/csstool/css/cmd.version={{.Version}}
   goos:
     - darwin
     - linux
