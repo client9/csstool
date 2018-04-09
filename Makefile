@@ -9,7 +9,7 @@ cov:
 	go tool cover -html=coverage.out
 
 clean:  ## clean up time
-	rm -rf dist/ bin/
+	rm -rf dist/ bin/ coverage.out
 	go clean ./...
 	git gc --aggressive
 
