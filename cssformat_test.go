@@ -170,7 +170,7 @@ var testcases = []struct {
 
 func TestCut(t *testing.T) {
 	for i, tcase := range testcases {
-		cf := NewCSSFormat(0, false, tcase.tags)
+		cf := NewCSSFormat(0, false, NewTagMatcher(tcase.tags))
 		in := strings.NewReader(tcase.css)
 		out := bytes.Buffer{}
 		err := cf.Format(in, &out)

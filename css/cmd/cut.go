@@ -44,7 +44,7 @@ For use with Hugo:
 		}
 
 		// now get CSS file
-		cf := csstool.NewCSSFormat(0, false, c.List())
+		cf := csstool.NewCSSFormat(0, false, csstool.NewTagMatcher(c.List()))
 		cf.Debug = flagDebug
 		err = cf.Format(os.Stdin, os.Stdout)
 		if err != nil {

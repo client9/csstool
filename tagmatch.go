@@ -1,39 +1,40 @@
 package csstool
 
-// tagMatch determines if a given CSS identifier should be kept or removed
+type matcher interface {
+	Remove([]byte) bool
+}
+
+// EmptyMatcher this keeps all elements, or rather, doesn't remove anything
+type EmptyMatcher struct{}
+
+// Remove always returns false (i.e. keep everything)
+func (em *EmptyMatcher) Remove(val []byte) bool {
+	return false
+}
+
+// TagMatcher determines if a given CSS identifier should be kept or removed
 // doesn't need to be public
-type tagMatch struct {
+type TagMatcher struct {
 	tags map[string]bool
 }
 
-// NewTagMatch creates an initialized TagMatch object
-func newTagMatch(tags []string) *tagMatch {
+// NewTagMatcher creates an initialized TagMatch object
+func NewTagMatcher(tags []string) *TagMatcher {
 	tagmap := make(map[string]bool, len(tags))
+
+	tagmap["*"] = true
+	tagmap[":root"] = true
+	tagmap["::after"] = true
+	tagmap["::before"] = true
+
 	for _, tag := range tags {
 		tagmap[tag] = true
 	}
-	delete(tagmap, "")
-	return &tagMatch{tags: tagmap}
-}
 
-// Keep returns true if a tag is to be preserved
-func (tm *tagMatch) Keep(val string) bool {
-	if len(tm.tags) == 0 || len(val) == 0 {
-		return true
-	}
-
-	// now we know len(val) > 0
-	//  special ones
-	if val[0] == '*' || val[0] == ':' {
-		return true
-	}
-	return tm.tags[val]
+	return &TagMatcher{tags: tagmap}
 }
 
 // Remove returns true if tag is to be dropped
-func (tm *tagMatch) Remove(val []byte) bool {
-	if len(tm.tags) == 0 {
-		return false
-	}
-	return !tm.Keep(string(val))
+func (tm *TagMatcher) Remove(val []byte) bool {
+	return !tm.tags[string(val)]
 }

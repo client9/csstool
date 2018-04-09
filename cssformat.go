@@ -26,18 +26,21 @@ type CSSFormat struct {
 	IndentTab       bool
 	AlwaysSemicolon bool
 	Debug           bool
-	Matcher         *tagMatch
+	Matcher         matcher
 }
 
 // NewCSSFormat creates an initialized CSSFormat object
-func NewCSSFormat(indent int, useTabs bool, tags []string) *CSSFormat {
+func NewCSSFormat(indent int, useTabs bool, m matcher) *CSSFormat {
 	if useTabs {
 		indent = 1
+	}
+	if m == nil {
+		m = &EmptyMatcher{}
 	}
 	return &CSSFormat{
 		Indent:    indent,
 		IndentTab: useTabs,
-		Matcher:   newTagMatch(tags),
+		Matcher:   m,
 	}
 }
 
@@ -174,6 +177,9 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			w.Write(data)
 			c.addNewline(w)
 		case css.CustomPropertyGrammar:
+			if skipRuleset {
+				continue
+			}
 			c.addIndent(w, indent)
 			w.Write(data)
 			// do not add space
