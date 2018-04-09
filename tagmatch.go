@@ -24,7 +24,7 @@ func (tm *tagMatch) Keep(val string) bool {
 
 	// now we know len(val) > 0
 	//  special ones
-	if val[0] == '*' || val[0] == ':' || val[0] == '[' {
+	if val[0] == '*' || val[0] == ':' {
 		return true
 	}
 	return tm.tags[val]

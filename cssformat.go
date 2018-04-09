@@ -217,7 +217,13 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 func primarySelector(tokens []css.Token) []byte {
 	buf := []byte{}
 	for _, t := range tokens {
-		if len(t.Data) != 1 {
+		if len(t.Data) == 0 {
+			continue
+		}
+
+		// something that looks like a tag name
+		// img or p or type
+		if len(t.Data) != 1 || (t.Data[0] >= 'a' && t.Data[0] <= 'z') {
 			buf = append(buf, t.Data...)
 			continue
 		}
@@ -240,14 +246,29 @@ func primarySelector(tokens []css.Token) []byte {
 				break
 			}
 			if len(buf) == 1 && buf[0] != ':' {
-				// got "a:
+				// got "a:" or equiv
 				break
 			}
+			// must be "::"
 		}
 		// attribute selector
 		if t.Data[0] == '[' {
+			// if it is the first, just allow it
+			// otherwise break
+			// i.e. allow [type=input]
+			// but not p[foo=bar] (for now)
+			if len(buf) > 0 {
+				break
+			}
+		}
+
+		if t.Data[0] == ']' {
+			buf = append(buf, t.Data...)
 			break
 		}
+
+		// everything else below breaks
+
 		// descendant combinator
 		// https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors
 		//  also note it could be ">>"

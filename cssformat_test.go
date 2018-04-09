@@ -65,9 +65,15 @@ var testcases = []struct {
 		want: "*,::after,::before{box-sizing:border-box}",
 	},
 	{
-		// raw attribute selectors are preserved
+		// raw attribute selectors are zapped
 		css:  "[hidden]{display:none!important}",
 		tags: []string{"h1"},
+		want: "",
+	},
+	{
+		// raw attribute selectors are preserved
+		css:  "[hidden]{display:none!important}",
+		tags: []string{"h1", "[hidden]"},
 		want: "[hidden]{display:none!important}",
 	},
 	{

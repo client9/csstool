@@ -8,6 +8,16 @@ import (
 	"golang.org/x/net/html"
 )
 
+// tags that should be ignore when generating
+// special href selectors
+var noAttrSelectors = map[string]bool{
+	"link":   true,
+	"style":  true,
+	"script": true,
+	"meta":   true,
+	"html":   true,
+}
+
 // CSSCount is for keeping a running frequency of CSS identifiers
 type CSSCount struct {
 	counter map[string]int
@@ -56,8 +66,10 @@ func (c *CSSCount) Add(r io.Reader) error {
 			return err
 		}
 		if tt == html.StartTagToken {
-			tname, hasA := z.TagName()
-			c.counter[string(tname)]++
+			tnamebytes, hasA := z.TagName()
+			tname := string(tnamebytes)
+			c.counter[tname]++
+
 			var key, val []byte
 			for hasA {
 				key, val, hasA = z.TagAttr()
@@ -69,6 +81,18 @@ func (c *CSSCount) Add(r io.Reader) error {
 					}
 				case "id":
 					c.counter["#"+string(val)]++
+				default:
+					// tags common in <head> should be ignored
+					if noAttrSelectors[tname] {
+						continue
+					}
+					keystr := string(key)
+					// special href selectors
+					c.counter[tname+"["+keystr+"]"]++
+					c.counter["["+keystr+"]"]++
+					if tname == "type" {
+						c.counter["["+keystr+"="+string(val)+"]"]++
+					}
 				}
 			}
 		}
