@@ -38,3 +38,13 @@ func NewTagMatcher(tags []string) *TagMatcher {
 func (tm *TagMatcher) Remove(val []byte) bool {
 	return !tm.tags[string(val)]
 }
+
+// AddSelector adds a selector to save
+func (tm *TagMatcher) AddSelector(key string) {
+	tm.tags[key] = true
+}
+
+// RemoveSelector deletes a selector to save
+func (tm *TagMatcher) RemoveSelector(key string) {
+	delete(tm.tags, key)
+}

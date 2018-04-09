@@ -3,6 +3,7 @@ package cmd
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/mattn/go-zglob"
 	"github.com/spf13/cobra"
@@ -44,7 +45,14 @@ For use with Hugo:
 		}
 
 		// now get CSS file
-		cf := csstool.NewCSSFormat(0, false, csstool.NewTagMatcher(c.List()))
+		m := csstool.NewTagMatcher(c.List())
+		for _, key := range strings.Split(flagKeep, ",") {
+			m.AddSelector(key)
+		}
+		for _, key := range strings.Split(flagRemove, ",") {
+			m.RemoveSelector(key)
+		}
+		cf := csstool.NewCSSFormat(0, false, m)
 		cf.Debug = flagDebug
 		err = cf.Format(os.Stdin, os.Stdout)
 		if err != nil {
@@ -54,11 +62,15 @@ For use with Hugo:
 }
 
 var (
-	flagHTML string
+	flagHTML   string
+	flagKeep   string
+	flagRemove string
 )
 
 func init() {
 	rootCmd.AddCommand(cutCmd)
 	cutCmd.Flags().StringVarP(&flagHTML, "html", "", "", "glob pattern to find HTML files")
+	cutCmd.Flags().StringVarP(&flagKeep, "keep", "", "", "csv list of selectors to keep")
+	cutCmd.Flags().StringVarP(&flagRemove, "remove", "", "", "csv list of selectors to remove")
 	cutCmd.MarkFlagRequired("html")
 }
