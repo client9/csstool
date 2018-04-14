@@ -166,6 +166,34 @@ var testcases = []struct {
 		tags: []string{"#demo"},
 		want: "#demo{border:red 2px solid}",
 	},
+	{
+		css:  "a.text-red { color:red }",
+		tags: []string{"a.text-red"},
+		want: "a.text-red{color:red}",
+	},
+	{
+		// tag+class.. a is used, but text-red is not
+		css:  "a.text-red { color:red }",
+		tags: []string{"a"},
+		want: "",
+	},
+	{
+		// tag+class, a is not used, but class is
+		css:  "a.text-red { color:red }",
+		tags: []string{".text-red"},
+		want: "",
+	},
+	{
+		// tag+class, both used, but not together
+		css:  "a.text-red { color:red }",
+		tags: []string{"a", ".text-red"},
+		want: "",
+	},
+	{
+		css:  ".text-red { color: red }",
+		tags: []string{".text-red"},
+		want: ".text-red{color:red}",
+	},
 }
 
 func TestCut(t *testing.T) {
