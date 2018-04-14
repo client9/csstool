@@ -20,11 +20,21 @@ func (s stack) Pop() (stack, io.Writer) {
 	return s[:l-1], s[l-1]
 }
 
+func inArray(ary []string, val string) bool {
+	for _, a := range ary {
+		if val == a {
+			return true
+		}
+	}
+	return false
+}
+
 // CSSFormat contains formatting perferances for CSS
 type CSSFormat struct {
 	Indent          int
 	IndentTab       bool
 	AlwaysSemicolon bool
+	RemoveAtRule    []string // ignore things like "@media XXX"
 	Debug           bool
 	Matcher         matcher
 }
@@ -139,6 +149,45 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			}
 			c.writeRightBrace(w, indent)
 		case css.BeginAtRuleGrammar:
+
+			// first compute the entire AtRule
+			atRule := []byte{}
+			atRule = append(atRule, data...)
+			tokens := p.Values()
+
+			// for '@media page', '@media' and 'page' has a required
+			// whitespace token and so must alway be printed.  No
+			// need to write extra whitespace
+			//
+			// for '@media (page-width:...)' the whitespace between them
+			// is optional.  Print it if desired.
+			if len(tokens) > 0 && tokens[0].TokenType != css.WhitespaceToken && c.Indent != 0 {
+				atRule = append(atRule, ' ')
+			}
+			for _, tok := range tokens {
+				atRule = append(atRule, tok.Data...)
+			}
+			// skip the "@media print" query
+			if inArray(c.RemoveAtRule, string(atRule)) {
+				// just skip over everything
+				nestdepth := 1
+				for nestdepth != 0 {
+					gt, _, _ = p.Next()
+
+					if gt == css.ErrorGrammar {
+						wbuf.Flush()
+						return nil
+					}
+					if gt == css.EndAtRuleGrammar {
+						nestdepth--
+					}
+					if gt == css.BeginAtRuleGrammar {
+						nestdepth++
+					}
+				}
+				continue
+			}
+
 			ruleCount = 0
 			rulesetCount = 0
 
@@ -150,9 +199,7 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 
 			w = &bytes.Buffer{}
 			c.addIndent(w, indent)
-			w.Write(data)
-			c.addSpace(w)
-			c.writeTokens(w, p.Values())
+			w.Write(atRule)
 			c.writeLeftBrace(w)
 
 			// set up new buffer for content

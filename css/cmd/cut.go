@@ -52,6 +52,8 @@ For use with Hugo:
 			m.RemoveSelector(key)
 		}
 		cf := csstool.NewCSSFormat(0, false, m)
+		cf.RemoveAtRule = flagRemoveAtRule
+
 		cf.Debug = flagDebug
 		err = cf.Format(os.Stdin, os.Stdout)
 		if err != nil {
@@ -61,9 +63,10 @@ For use with Hugo:
 }
 
 var (
-	flagHTML   string
-	flagKeep   []string
-	flagRemove []string
+	flagHTML         string
+	flagKeep         []string
+	flagRemove       []string
+	flagRemoveAtRule []string
 )
 
 func init() {
@@ -71,5 +74,6 @@ func init() {
 	cutCmd.Flags().StringVarP(&flagHTML, "html", "", "", "glob pattern to find HTML files")
 	cutCmd.Flags().StringSliceVarP(&flagKeep, "keep", "", nil, "csv list of selectors to keep")
 	cutCmd.Flags().StringSliceVarP(&flagRemove, "remove", "", nil, "csv list of selectors to remove")
+	cutCmd.Flags().StringSliceVarP(&flagRemoveAtRule, "remove-at-rule", "", nil, "csv list of at-rules to remove. for example '@media print'")
 	cutCmd.MarkFlagRequired("html")
 }
