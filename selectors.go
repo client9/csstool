@@ -44,9 +44,12 @@ func primarySelector(tokens []css.Token) []byte {
 			}
 			if t.Data[0] == '.' {
 				// only allow one class:
-
+				// .foo.bar --> .foo
+				// if .foo doesn't exist then .foo.bar won't either
+				// it could be .foo exists but .bar doesn't but
+				// are not optimizing that
 				if hasClass {
-					return []byte{}
+					return buf
 				}
 				hasClass = true
 				buf = append(buf, t.Data...)

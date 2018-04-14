@@ -78,6 +78,7 @@ func (c *CSSCount) Add(r io.Reader) error {
 					classes := string(val)
 					for _, cname := range strings.Fields(classes) {
 						c.counter["."+cname]++
+						c.counter[tname+"."+cname]++
 					}
 				case "id":
 					c.counter["#"+string(val)]++

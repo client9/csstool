@@ -30,13 +30,14 @@ func TestGetSelectors(t *testing.T) {
 			".foo",
 		},
 		{
-			// multiple class selector not supported
+			// multiple class selector
+			// only check first class
 			"p.foo.bar",
-			"",
+			"p.foo",
 		},
 		{
 			".foo.bar",
-			"",
+			".foo",
 		},
 		{
 			"[ hidden ]",
