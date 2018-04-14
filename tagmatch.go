@@ -22,6 +22,7 @@ type TagMatcher struct {
 func NewTagMatcher(tags []string) *TagMatcher {
 	tagmap := make(map[string]bool, len(tags))
 
+	tagmap[""] = true
 	tagmap["*"] = true
 	tagmap[":root"] = true
 	tagmap["::after"] = true
