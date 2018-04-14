@@ -35,6 +35,7 @@ type CSSFormat struct {
 	IndentTab       bool
 	AlwaysSemicolon bool
 	RemoveAtRule    []string // ignore things like "@media XXX"
+	RemoveSourceMap bool     // remove comment with source map
 	Debug           bool
 	Matcher         matcher
 }
@@ -221,6 +222,9 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			w.Write(contents)
 			c.writeRightBrace(w, indent)
 		case css.CommentGrammar:
+			if c.RemoveSourceMap && bytes.Contains(data, []byte("sourceMappingURL")) {
+				continue
+			}
 			w.Write(data)
 			c.addNewline(w)
 		case css.CustomPropertyGrammar:
