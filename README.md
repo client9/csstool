@@ -7,12 +7,12 @@ CSS filters and formatters in golang
 
 Use awesome CSS frameworks without the weight by cutting out unused rules.
 
-`csscut` is similar to [purgecss](https://www.purgecss.com) ([GitHub](https://github.com/FullHuman/purgecss)). It scans your HTML for elements, classes and identifiers and then cuts out any CSS rule that doesn't apply. The results for a small site using a framework like [bootstrap](https://getbootstrap.com) can be dramatic:
+`css cut` is similar to [purgecss](https://www.purgecss.com) ([GitHub](https://github.com/FullHuman/purgecss)). It scans your HTML for elements, classes and identifiers and then cuts out any CSS rule that doesn't apply. The results for a [small site](https://www.client9.com/) using a framework like [bootstrap](https://getbootstrap.com) can be dramatic:
 
-|                | Bootstrap | csscut   | savings |
+|                | Bootstrap | css cut  | savings |
 |----------------|-----------|----------|---------|
-| uncompressed   |   141k    |   8.1k   |   94%   |
-| compressed     |    20k    |   2.6k   |   87%   |
+| uncompressed   |   141k    |   5.6k   |   96%   |
+| compressed     |    20k    |   1.8k   |   91%   |
 
 
 See also [Hugo #4446](https://github.com/gohugoio/hugo/issues/4446#issuecomment-370070252)
@@ -66,9 +66,8 @@ There are a few problems:
 Since the Correct Way seems problematic, csscut does the following:
 
 1. Read each HTML file and keep track of elements, classes and ids found.
-2. Scan the CSS file and using the _primary selector_ and previous step, keep or remove the selector and it's rule.   Combinators and pseudo-elements are ignored in making the decision.
-
-If the `li` element is found in the html then the CSS selector is also allowed `li:first-of-type` and `li li` even if you don't have a nested list.  If `img` is found, then the CSS rule `img ~ p` is also allowed, even if you don't have paragraph as a sibling of an image.
+2. Scan the CSS file and convert a selector into a set of "basic selectors".  If a rule is `h1 h2 h3` then the list of basic selectors is h1, h2, and h3. Classes and identifiers (ids) are preserved, while pseudo elements and attribute selectors are ignored.
+3. Then if each of the basic selectors is found in out list in the first step, the original selector is preserved.  This not the rule is tossed out.
 
 As a special case, "universal selectors" are passed through: `*, ::before, ::after, ::root`. Pure attribute selectors are also passed through: `[hidden]`.
 
@@ -88,7 +87,7 @@ css format < bootstrap.min.css
 css minify < bootstrap.min.css
 ```
 
-minify is a short cut of 'css format' with all options selected to produce the smallest output.
+minify is a shortcut of 'css format' with all options selected to produce the smallest output. It is "conservative" in that it only removes whitespace and does not do any property value rewriting.
 
 # css count
 
