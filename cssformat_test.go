@@ -97,7 +97,7 @@ var testcases = []struct {
 	{
 		// "." specifier after first char
 		css:  ".row.uniform>*>:first-child{margin-top:0}",
-		tags: []string{".row"},
+		tags: []string{".row", ".uniform"},
 		want: ".row.uniform>*>:first-child{margin-top:0}",
 	},
 	{
@@ -149,14 +149,14 @@ var testcases = []struct {
 		// general sibling combinator
 		// https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_selectors
 		css:  "img~p{color:red}",
-		tags: []string{"img"},
+		tags: []string{"img", "p"},
 		want: "img~p{color:red}",
 	},
 	{
 		// adjacent sibling combinator
 		// https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_selectors
 		css:  "img+p{font-style:bold}",
-		tags: []string{"img"},
+		tags: []string{"img", "p"},
 		want: "img+p{font-style:bold}",
 	},
 	{

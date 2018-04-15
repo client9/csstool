@@ -1,14 +1,14 @@
 package csstool
 
 type matcher interface {
-	Remove([]byte) bool
+	Remove([]string) bool
 }
 
 // EmptyMatcher this keeps all elements, or rather, doesn't remove anything
 type EmptyMatcher struct{}
 
 // Remove always returns false (i.e. keep everything)
-func (em *EmptyMatcher) Remove(val []byte) bool {
+func (em *EmptyMatcher) Remove([]string) bool {
 	return false
 }
 
@@ -25,6 +25,7 @@ func NewTagMatcher(tags []string) *TagMatcher {
 	tagmap[""] = true
 	tagmap["*"] = true
 	tagmap[":root"] = true
+	tagmap[":first-child"] = true
 	tagmap["::after"] = true
 	tagmap["::before"] = true
 
@@ -36,8 +37,13 @@ func NewTagMatcher(tags []string) *TagMatcher {
 }
 
 // Remove returns true if tag is to be dropped
-func (tm *TagMatcher) Remove(val []byte) bool {
-	return !tm.tags[string(val)]
+func (tm *TagMatcher) Remove(selectors []string) bool {
+	for _, selector := range selectors {
+		if !tm.tags[selector] {
+			return true
+		}
+	}
+	return false //i.e. keep
 }
 
 // AddSelector adds a selector to save

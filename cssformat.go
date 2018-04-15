@@ -89,9 +89,9 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 		// h1,h2 are here, but h3 is a beginRuleSetGrammar
 		case css.QualifiedRuleGrammar:
 			tokens := p.Values()
-			if c.Matcher.Remove(primarySelector(tokens)) {
+			if c.Matcher.Remove(selectors(tokens)) {
 				if c.Debug {
-					log.Printf("cutting qualified rule %q due to %q", completeSelector(tokens), primarySelector(tokens))
+					log.Printf("cutting qualified rule %q", completeSelector(tokens))
 				}
 				continue
 			}
@@ -108,9 +108,9 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 			ruleCount = 0
 			tokens := p.Values()
 			if qualified == 0 {
-				if c.Matcher.Remove(primarySelector(tokens)) {
+				if c.Matcher.Remove(selectors(tokens)) {
 					if c.Debug {
-						log.Printf("cutting ruleset1 %q due to %q", completeSelector(tokens), primarySelector(tokens))
+						log.Printf("cutting ruleset1 %q", completeSelector(tokens))
 					}
 					indent++
 					skipRuleset = true
@@ -125,9 +125,9 @@ func (c *CSSFormat) Format(r io.Reader, wraw io.Writer) error {
 
 			qualified = 0
 			indent++
-			if c.Matcher.Remove(primarySelector(tokens)) {
+			if c.Matcher.Remove(selectors(tokens)) {
 				if c.Debug {
-					log.Printf("cutting qualified rule %q due to %q", completeSelector(tokens), primarySelector(tokens))
+					log.Printf("cutting qualified rule %q", completeSelector(tokens))
 				}
 				c.writeLeftBrace(w)
 				continue
