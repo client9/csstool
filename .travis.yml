@@ -2,7 +2,7 @@ sudo: false
 dist: trusty
 language: go
 go:
-  - "1.10"
+  - "1.10.1"
 git:
   depth: 1
 script:
