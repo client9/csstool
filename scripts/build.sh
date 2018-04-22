@@ -3,7 +3,7 @@ set -ex
 
 go build ./...
 go test .
-gometalinter \
+./bin/gometalinter \
     --vendor \
     --deadline=60s \
     --disable-all \
