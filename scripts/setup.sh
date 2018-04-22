@@ -1,5 +1,4 @@
 #!/bin/sh
 set -ex
-./scripts/godownloader-goreleaser.sh
-go get -u github.com/alecthomas/gometalinter && gometalinter --install
-go get -u github.com/golang/dep/... && dep ensure
+curl -sSL https://install.goreleaser.com/github.com/alecthomas/gometalinter.sh | sh
+curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh

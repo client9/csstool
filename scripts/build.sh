@@ -2,7 +2,7 @@
 set -ex
 
 go build ./...
-go install ./css
+go test .
 gometalinter \
     --vendor \
     --deadline=60s \
@@ -15,4 +15,4 @@ gometalinter \
     --enable=staticcheck \
     --enable=ineffassign \
     ./...
-go test .
+go install ./css

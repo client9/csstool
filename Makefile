@@ -1,5 +1,5 @@
 
-build: hooks  ## build, install, lint, test
+build: hooks  ## build, install, test, lint
 	./scripts/build.sh
 
 test: build
@@ -12,8 +12,6 @@ clean:  ## clean up time
 	rm -rf dist/ bin/ coverage.out
 	go clean ./...
 	git gc --aggressive
-
-.PHONY: help ci bench
 
 # https://www.client9.com/automatically-install-git-hooks/
 .git/hooks/pre-commit: scripts/pre-commit.sh
