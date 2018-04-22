@@ -1,6 +1,6 @@
 #!/bin/sh
 set -ex
-
+PATH="./bin:$PATH"
 go build ./...
 go test .
 ./bin/gometalinter \
@@ -11,8 +11,6 @@ go test .
     --enable=golint \
     --enable=gofmt \
     --enable=goimports \
-    --enable=gosimple \
-    --enable=staticcheck \
     --enable=ineffassign \
     ./...
 go install ./css

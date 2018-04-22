@@ -1,2 +1,2 @@
 #!/bin/sh -ex
-misspell -error "$1"
+./bin/misspell -error "$1"
