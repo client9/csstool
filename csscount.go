@@ -2,6 +2,7 @@ package csstool
 
 import (
 	"io"
+	"log"
 	"sort"
 	"strings"
 
@@ -58,14 +59,14 @@ func (c *CSSCount) Add(r io.Reader) error {
 	z := html.NewTokenizer(r)
 	for {
 		tt := z.Next()
-		if tt == html.ErrorToken {
+		switch tt {
+		case html.ErrorToken:
 			err := z.Err()
 			if err == io.EOF {
 				return nil
 			}
 			return err
-		}
-		if tt == html.StartTagToken {
+		case html.StartTagToken, html.SelfClosingTagToken:
 			tnamebytes, hasA := z.TagName()
 			tname := string(tnamebytes)
 			c.counter[tname]++
@@ -77,6 +78,7 @@ func (c *CSSCount) Add(r io.Reader) error {
 				case "class":
 					classes := string(val)
 					for _, cname := range strings.Fields(classes) {
+						log.Printf("Adding %s", cname)
 						c.counter["."+cname]++
 						c.counter[tname+"."+cname]++
 					}
