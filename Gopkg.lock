@@ -2,54 +2,71 @@
 
 
 [[projects]]
+  digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
+  pruneopts = "UT"
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   version = "v1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:36aebe90a13cf9128280ac834399b8bebf83685283c78df279d61c46bb2a8d83"
   name = "github.com/mattn/go-zglob"
   packages = [
     ".",
-    "fastwalk"
+    "fastwalk",
   ]
-  revision = "4959821b481786922ac53e7ef25c61ae19fb7c36"
+  pruneopts = "UT"
+  revision = "2ea3427bfa539cca900ca2768d8663ecc8a708c1"
 
 [[projects]]
+  digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "a1f051bc3eba734da4772d60e2d677f47cf93ef4"
-  version = "v0.0.2"
+  pruneopts = "UT"
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
 
 [[projects]]
+  digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
   name = "github.com/spf13/pflag"
   packages = ["."]
-  revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
-  version = "v1.0.1"
+  pruneopts = "UT"
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
+  digest = "1:50848d50829790b553357b6e97e5bdeed95d7434abdb53a4c7fe5d60adb838c4"
   name = "github.com/tdewolff/parse"
   packages = [
     ".",
     "buffer",
-    "css"
+    "css",
   ]
-  revision = "639f6272aec6b52094db77b9ec488214b0b4b1a1"
-  version = "v2.3.2"
+  pruneopts = "UT"
+  revision = "fced451e0bedc5b641b8dcae76b07859e3b4adfd"
+  version = "v2.3.4"
 
 [[projects]]
   branch = "master"
+  digest = "1:1a1ecfa7b54ca3f7a0115ab5c578d7d6a5d8b605839c549e80260468c42f8be7"
   name = "golang.org/x/net"
   packages = [
     "html",
-    "html/atom"
+    "html/atom",
   ]
-  revision = "5f9ae10d9af5b1c89ae6904293b14b064d4ada23"
+  pruneopts = "UT"
+  revision = "9b4f9f5ad5197c79fd623a3638e70d8b26cef344"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "781dab5ff6e82f2d2f4078c92320b3583a077a1ddf091ff888f348eab0aea50d"
+  input-imports = [
+    "github.com/mattn/go-zglob",
+    "github.com/spf13/cobra",
+    "github.com/tdewolff/parse/css",
+    "golang.org/x/net/html",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
