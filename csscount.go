@@ -22,6 +22,7 @@ var noAttrSelectors = map[string]bool{
 // CSSCount is for keeping a running frequency of CSS identifiers
 type CSSCount struct {
 	counter map[string]int
+	Debug   bool
 }
 
 // NewCSSCount returns an initialized CSSCount object
@@ -78,11 +79,15 @@ func (c *CSSCount) Add(r io.Reader) error {
 				case "class":
 					classes := string(val)
 					for _, cname := range strings.Fields(classes) {
-						log.Printf("Adding %s", cname)
+						// TODO: this should fire only it's new
+						if c.Debug {
+							log.Printf("Adding %s", cname)
+						}
 						c.counter["."+cname]++
 						c.counter[tname+"."+cname]++
 					}
 				case "id":
+					// TODO: add debug log
 					c.counter["#"+string(val)]++
 				default:
 					// tags common in <head> should be ignored
@@ -91,6 +96,7 @@ func (c *CSSCount) Add(r io.Reader) error {
 					}
 					keystr := string(key)
 					// special href selectors
+					// TODO DEBUG
 					c.counter[tname+"["+keystr+"]"]++
 					c.counter["["+keystr+"]"]++
 					if tname == "type" {

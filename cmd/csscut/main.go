@@ -19,6 +19,7 @@ func main() {
 	flag.Parse()
 
 	c := csstool.NewCSSCount()
+	c.Debug = *flagDebug
 	if *flagHTML == "" {
 		log.Fatalf("must specify html pattern")
 	}
