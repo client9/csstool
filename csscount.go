@@ -25,6 +25,16 @@ type CSSCount struct {
 	Debug   bool
 }
 
+var replacer = strings.NewReplacer([]string{
+	"{", "\\{",
+	"}", "\\}",
+	":", "\\:",
+	"/", "\\/",
+	"(", "\\(",
+	")", "\\)",
+	"[", "\\[",
+	"]", "\\]"}...)
+
 // NewCSSCount returns an initialized CSSCount object
 func NewCSSCount() *CSSCount {
 	c := CSSCount{}
@@ -83,11 +93,13 @@ func (c *CSSCount) Add(r io.Reader) error {
 						if c.Debug {
 							log.Printf("Adding %s", cname)
 						}
+						cname = replacer.Replace(cname)
 						c.counter["."+cname]++
 						c.counter[tname+"."+cname]++
 					}
 				case "id":
 					// TODO: add debug log
+					val = replacer.Replace(val)
 					c.counter["#"+string(val)]++
 				default:
 					// tags common in <head> should be ignored
