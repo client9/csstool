@@ -99,7 +99,7 @@ func (c *CSSCount) Add(r io.Reader) error {
 					}
 				case "id":
 					// TODO: add debug log
-					val = replacer.Replace(val)
+					val = []byte(replacer.Replace(string(val)))
 					c.counter["#"+string(val)]++
 				default:
 					// tags common in <head> should be ignored
