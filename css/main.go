@@ -1,6 +1,6 @@
 package main
 
-import "github.com/client9/csstool/css/cmd"
+import "github.com/lemondevxyz/csstool/css/cmd"
 
 func main() {
 	cmd.Execute()

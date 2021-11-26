@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/client9/csstool"
+	"github.com/lemondevxyz/csstool"
 )
 
 // minifyCmd represents the minify command

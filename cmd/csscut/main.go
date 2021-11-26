@@ -5,9 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/lemondevxyz/csstool"
 	"github.com/mattn/go-zglob"
-
-	"github.com/client9/csstool"
 )
 
 var (

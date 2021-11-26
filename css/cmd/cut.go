@@ -7,7 +7,7 @@ import (
 	"github.com/mattn/go-zglob"
 	"github.com/spf13/cobra"
 
-	"github.com/client9/csstool"
+	"github.com/lemondevxyz/csstool"
 )
 
 // cutCmd represents the cut command
