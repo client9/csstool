@@ -11,3 +11,5 @@ require (
 	github.com/tdewolff/test v1.0.6 // indirect
 	golang.org/x/net v0.0.0-20181023162649-9b4f9f5ad519
 )
+
+replace github.com/client9/csstool v0.2.0 => github.com/lemondevxyz/csstool v0.2.1
