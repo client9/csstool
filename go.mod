@@ -1,4 +1,4 @@
-module github.com/lemondevxyz/csstool
+module github.com/client9/csstool
 
 require (
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
