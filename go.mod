@@ -10,4 +10,7 @@ require (
 	golang.org/x/net v0.0.0-20181023162649-9b4f9f5ad519
 )
 
-replace github.com/client9/csstool v0.2.0 => github.com/lemondevxyz/csstool v0.2.1
+replace (
+	github.com/client9/csstool v0.2.0 => github.com/lemondevxyz/csstool v0.2.1
+	github.com/client9/csstool v0.2.2 => github.com/lemondevxyz/csstool v0.2.3
+)
