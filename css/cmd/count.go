@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/lemondevxyz/csstool"
+	"github.com/client9/csstool"
 	"github.com/mattn/go-zglob"
 	"github.com/spf13/cobra"
 )
