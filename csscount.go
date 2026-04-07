@@ -40,7 +40,6 @@ func (c *CSSCount) Reset() {
 // Counts returns a map of identifers and their frequency counts
 //
 // NOTE: returns internal object, not a copy
-//
 func (c *CSSCount) Counts() map[string]int {
 	return c.counter
 }
