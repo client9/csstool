@@ -14,3 +14,5 @@ require (
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/tdewolff/test v1.0.0 // indirect
 )
+
+replace github.com/client9/csstool v0.2.0 => github.com/lemondevxyz/csstool v0.2.1
